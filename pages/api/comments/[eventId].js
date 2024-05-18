@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 export default async function handler(req, res) {
     if (req.method === "POST") {
+        const eventId = req.query.eventId;
         const { email, name, text } = req.body;
 
         const client = await MongoClient.connect(
@@ -33,18 +34,15 @@ export default async function handler(req, res) {
         res.status(201).json({ message: "Added comment", comment: newComment });
     }
     if (req.method === "GET") {
-        const dummyList = [
-            {
-                id: "c1",
-                name: "akif",
-                text: "hello text",
-            },
-            {
-                id: "c2",
-                name: "mehmet",
-                text: "hello test",
-            },
-        ];
+        const db = client.db();
+
+        const documents = await db
+            .collection("comments")
+            .find()
+            .sort({ _id: -1 })
+            .toArray();
+
+        res.status(200).json({ comments: documents });
     }
     client.close();
 }
