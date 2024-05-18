@@ -1,7 +1,11 @@
-export default function handler(req, res) {
+import { MongoClient } from "mongodb";
+export default async function handler(req, res) {
     if (req.method === "POST") {
         const { email, name, text } = req.body;
 
+        const client = await MongoClient.connect(
+            `mongodb+srv://akifzoort:fkzlp5C1QKNXZiNg@cluster0.odr4bza.mongodb.net/events?retryWrites=true&w=majority&appName=Cluster0`
+        );
         if (
             !email.includes("@") ||
             !name ||
@@ -14,12 +18,18 @@ export default function handler(req, res) {
         }
 
         const newComment = {
-            id: new Date().toISOString(),
             email,
             name,
             text,
+            eventId,
         };
-        console.log(newComment);
+
+        const db = client.db();
+
+        const result = await db.collection("comments").insertOne(newComment);
+
+        newComment.id = result.insertedId;
+
         res.status(201).json({ message: "Added comment", comment: newComment });
     }
     if (req.method === "GET") {
@@ -36,4 +46,5 @@ export default function handler(req, res) {
             },
         ];
     }
+    client.close();
 }
