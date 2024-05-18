@@ -6,7 +6,7 @@ import {
 
 async function handler(req, res) {
     const eventId = req.query.eventId;
-
+    console.log("eventId", eventId);
     let client;
 
     try {
