@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Layout from "../components/layout/layout";
 import "../styles/globals.css";
+import Notification from "../components/ui/notification";
 
 function MyApp({ Component, pageProps }) {
     return (
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }) {
                 />
             </Head>
             <Component {...pageProps} />
+            <Notification />
         </Layout>
     );
 }
