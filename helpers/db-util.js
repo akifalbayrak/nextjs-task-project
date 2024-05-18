@@ -1,9 +1,13 @@
+import { MongoClient } from "mongodb";
+
 export async function connectDatabase() {
     const client = await MongoClient.connect(
-        `mongodb+srv://akifzoort:fkzlp5C1QKNXZiNg@cluster0.odr4bza.mongodb.net/events?retryWrites=true&w=majority&appName=Cluster0`
+        `mongodb+srv://akifzoort:GnFUBrNyXAZo4POT@cluster0.odr4bza.mongodb.net/events?retryWrites=true&w=majority&appName=Cluster0`
     );
+
     return client;
 }
+
 export async function insertDocument(client, collection, document) {
     const db = client.db();
 
